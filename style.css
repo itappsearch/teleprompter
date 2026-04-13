@@ -1,10 +1,9 @@
-/* Core Styling */
 body {
     background: #000;
     color: #fff;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
-    overflow-x: hidden; /* Hide horizontal, allow vertical for script */
+    overflow-x: hidden;
 }
 
 #setup-screen {
@@ -14,12 +13,8 @@ body {
     justify-content: center;
     padding: 20px;
     min-height: 100vh;
-    box-sizing: border-box;
     background: #111;
 }
-
-.logo-text { font-size: 2rem; font-weight: 300; letter-spacing: 4px; color: #fff; margin-bottom: 2rem; }
-.logo-text .dot { color: #555; }
 
 textarea {
     width: 90%;
@@ -28,60 +23,45 @@ textarea {
     color: #fff;
     border: 1px solid #333;
     font-size: 1.5rem;
-    line-height: 1.6;
-    padding: 30px;
-    border-radius: 4px;
-    margin-bottom: 2rem;
-    resize: none;
-    font-weight: bold;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
-/* UI Controls Panel */
 .controls-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
     background: #1a1a1a;
+    padding: 10px;
     border-radius: 8px;
+    gap: 15px;
+    align-items: center;
 }
 
 .control-segment {
     display: flex;
-    align-items: center;
-    background: #222; 
-    height: 45px;
+    background: #222;
     border-radius: 6px;
     overflow: hidden;
+    height: 45px;
+    align-items: center;
 }
 
-.control-segment .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.icon {
     width: 45px;
     height: 45px;
     background: #000;
-    color: #555;
-    font-size: 1.1rem;
-}
-
-.control-segment .options {
     display: flex;
-    padding: 0 10px;
     align-items: center;
+    justify-content: center;
+    color: #555;
 }
 
 .opt {
     background: none;
     border: none;
     color: #555;
-    font-size: 0.95rem;
     font-weight: bold;
+    padding: 0 15px;
     cursor: pointer;
-    padding: 0 12px;
-    transition: color 0.2s;
 }
 
 .opt.selected {
@@ -91,61 +71,45 @@ textarea {
 .start-btn {
     background: #0a3d1c;
     color: #0dcf50;
-    padding: 12px 30px;
+    padding: 10px 25px;
     border: none;
-    border-radius: 6px;
-    font-size: 1.1rem;
+    border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
-    margin-left: 10px;
 }
 
-/* -----------------------------
-   PROMPTER VIEW (The Output)
-   ----------------------------- */
+/* Prompter View */
 #prompter-screen {
-    position: absolute; /* Fix for scrolling */
+    position: absolute;
     top: 0; left: 0; width: 100vw; min-height: 100vh;
     background: #000;
     z-index: 999;
 }
 
 #prompter-text {
-    width: 85%; /* TV Safe Zone */
+    width: 80%;
     margin: 0 auto;
-    color: #fff; 
+    color: #fff;
     white-space: pre-wrap;
-    line-height: 1.6;
     font-weight: bold;
-    padding-top: 50vh; 
+    padding-top: 50vh;
     padding-bottom: 100vh;
     font-size: 8vh;
-    text-align: left;
+    line-height: 1.6;
 }
 
 .reading-line {
     position: fixed;
     top: 50%;
-    left: 0;
     width: 100%;
     height: 2px;
-    background: rgba(255, 0, 0, 0.4); /* Red line indicator */
-    z-index: 1001;
-    pointer-events: none;
+    background: rgba(255,0,0,0.5);
+    z-index: 1000;
 }
 
-/* Alignment & Mirroring */
-.align-center { text-align: center !important; }
-.align-right { text-align: right !important; }
-.mirrored { transform: scaleX(-1); }
-
+/* Logic Classes */
 .hidden { display: none; }
-
-.tv-controls {
-    position: fixed;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 0.8rem;
-    color: #444;
-}
+.mirrored { transform: scaleX(-1); }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
