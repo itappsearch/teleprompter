@@ -1,0 +1,162 @@
+/* Core Styling */
+body {
+    background: #000;
+    color: #fff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    overflow: hidden;
+}
+
+#setup-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    height: 100vh;
+    box-sizing: border-box;
+    background: #111; /* Dark grey setup bg */
+}
+
+.logo-text { font-size: 2rem; font-weight: 300; letter-spacing: 4px; color: #fff; margin-bottom: 2rem; }
+.logo-text .dot { color: #555; }
+
+textarea {
+    width: 90%;
+    flex-grow: 1;
+    background: #000;
+    color: #fff; /* Final text must be white */
+    border: 1px solid #333;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    padding: 30px;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    resize: none;
+    font-weight: bold; /* Thicker for TV visibility */
+}
+
+/* Control Container (Dark Grey band) */
+.controls-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Segmented Control Boxes */
+.control-segment {
+    display: flex;
+    align-items: center;
+    background: #1a1a1a; /* Dark gray segments */
+    height: 40px;
+    border-radius: 4px;
+    overflow: hidden;
+    color: #555; /* Unselected icons/text */
+}
+
+.control-segment .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #000; /* Darker box for icon */
+    font-size: 1.2rem;
+}
+
+.control-segment .options {
+    display: flex;
+    padding: 0 10px;
+    gap: 1px; /* Divider feel */
+}
+
+/* Base button style (unselected) */
+.opt {
+    background: none;
+    border: none;
+    color: #555; /* Unselected is dim */
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    height: 100%;
+    transition: all 0.2s ease;
+    padding: 0 10px;
+}
+
+/* Selected Button State (Requested: White Text) */
+.opt.selected {
+    color: #fff !important; /* Forces white on selected items */
+    cursor: default;
+}
+
+/* Mirror Specific styling */
+.mirror-toggle .icon { color: #555; }
+.mirror-toggle .options { padding-left: 20px; color: #fff; }
+.mirror-toggle:hover { cursor: pointer; background: #2a2a2a; }
+
+/* The 'Start' Button (Green per reference) */
+.start-btn {
+    background: #0a3d1c; /* Ref green */
+    color: #0dcf50; /* Light green text */
+    padding: 10px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* -----------------------------
+   PROMPTER VIEW (The Output)
+   ----------------------------- */
+#prompter-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #000;
+    z-index: 999;
+}
+
+#prompter-text {
+    width: 80%; /* Safe zone from TV edges */
+    margin: 0 auto;
+    color: #fff; /* High visibility white text */
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-weight: bold;
+    padding-top: 45vh; /* Center initial text */
+    padding-bottom: 90vh; /* Allow scrolling far past end */
+    font-size: 8vh; /* Ideal TV default height */
+    text-align: left; /* Dynamic */
+}
+
+.reading-line {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-top: 2px solid #ff0000; /* Red guiding line */
+    z-index: 1001;
+    pointer-events: none;
+}
+
+/* Output alignment and mirroring dynamic classes */
+.align-center { text-align: center !important; }
+.align-right { text-align: right !important; }
+.mirrored { transform: scaleX(-1); }
+
+.hidden { display: none; }
+
+.tv-controls {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    text-align: center;
+    font-size: 0.8rem;
+    color: #888;
+}
