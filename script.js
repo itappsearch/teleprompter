@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let animationId;
     let currentSpeed = 3;
     let currentAlign = 'left';
+    let currentSize = 'standard';
     let isMirrored = false;
 
     const startBtn = document.getElementById('start-btn');
@@ -10,30 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const prompterText = document.getElementById('prompter-text');
     const prompterScreen = document.getElementById('prompter-screen');
 
-    // 1. Speed Handling
-    document.querySelectorAll('#speed-options .opt').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelector('#speed-options .selected').classList.remove('selected');
-            btn.classList.add('selected');
-            currentSpeed = parseInt(btn.dataset.speed);
+    // 1. UI Selection Handlers
+    function setupSegment(containerId, callback) {
+        document.querySelectorAll(`#${containerId} .opt`).forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector(`#${containerId} .selected`).classList.remove('selected');
+                btn.classList.add('selected');
+                callback(btn);
+            });
         });
-    });
+    }
 
-    // 2. Alignment Handling
-    document.querySelectorAll('#align-options .opt').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelector('#align-options .selected').classList.remove('selected');
-            btn.classList.add('selected');
-            currentAlign = btn.dataset.align;
-        });
-    });
+    setupSegment('speed-options', (btn) => currentSpeed = parseInt(btn.dataset.speed));
+    setupSegment('size-options', (btn) => currentSize = btn.dataset.size);
+    setupSegment('align-options', (btn) => currentAlign = btn.dataset.align);
 
-    // 3. Mirror Toggle Handling
+    // 2. Mirror Toggle
     const mirrorBtn = document.getElementById('mirror-btn');
     mirrorBtn.addEventListener('click', () => {
         isMirrored = !isMirrored;
         const mirrorText = document.getElementById('mirror-text');
-        
         if (isMirrored) {
             mirrorText.innerText = "Mirrored";
             mirrorText.classList.add('selected');
@@ -43,20 +40,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. Start Button Logic
+    // 3. Start Button Logic
     startBtn.addEventListener('click', () => {
-        // Set Text
-        prompterText.innerText = textInput.value || "Paste your script...";
+        prompterText.innerText = textInput.value || "PASTE YOUR SCRIPT HERE...";
         
         // Apply Mirror
         if (isMirrored) prompterText.classList.add('mirrored');
         else prompterText.classList.remove('mirrored');
 
         // Apply Alignment
-        prompterText.classList.remove('text-left', 'text-center', 'text-right');
+        prompterText.className = ''; // Reset all classes
         prompterText.classList.add(`text-${currentAlign}`);
+        
+        // Apply Size
+        prompterText.classList.add(`size-${currentSize}`);
 
-        // Launch
         prompterScreen.classList.remove('hidden');
         window.scrollTo(0, 0);
         isScrolling = true;
@@ -69,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         animationId = requestAnimationFrame(animate);
     }
 
-    // 5. Controls
+    // 4. Keyboard Controls
     window.addEventListener('keydown', (e) => {
         if (prompterScreen.classList.contains('hidden')) return;
         if (e.key === 'Escape') {
