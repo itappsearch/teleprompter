@@ -4,7 +4,7 @@ body {
     color: #fff;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
-    overflow: hidden;
+    overflow-x: hidden; /* Hide horizontal, allow vertical for script */
 }
 
 #setup-screen {
@@ -13,9 +13,9 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    height: 100vh;
+    min-height: 100vh;
     box-sizing: border-box;
-    background: #111; /* Dark grey setup bg */
+    background: #111;
 }
 
 .logo-text { font-size: 2rem; font-weight: 300; letter-spacing: 4px; color: #fff; margin-bottom: 2rem; }
@@ -23,9 +23,9 @@ body {
 
 textarea {
     width: 90%;
-    flex-grow: 1;
+    height: 300px;
     background: #000;
-    color: #fff; /* Final text must be white */
+    color: #fff;
     border: 1px solid #333;
     font-size: 1.5rem;
     line-height: 1.6;
@@ -33,103 +33,94 @@ textarea {
     border-radius: 4px;
     margin-bottom: 2rem;
     resize: none;
-    font-weight: bold; /* Thicker for TV visibility */
+    font-weight: bold;
 }
 
-/* Control Container (Dark Grey band) */
+/* UI Controls Panel */
 .controls-container {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
     padding: 10px;
-    border-radius: 4px;
+    background: #1a1a1a;
+    border-radius: 8px;
 }
 
-/* Segmented Control Boxes */
 .control-segment {
     display: flex;
     align-items: center;
-    background: #1a1a1a; /* Dark gray segments */
-    height: 40px;
-    border-radius: 4px;
+    background: #222; 
+    height: 45px;
+    border-radius: 6px;
     overflow: hidden;
-    color: #555; /* Unselected icons/text */
 }
 
 .control-segment .icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: #000; /* Darker box for icon */
-    font-size: 1.2rem;
+    width: 45px;
+    height: 45px;
+    background: #000;
+    color: #555;
+    font-size: 1.1rem;
 }
 
 .control-segment .options {
     display: flex;
     padding: 0 10px;
-    gap: 1px; /* Divider feel */
+    align-items: center;
 }
 
-/* Base button style (unselected) */
 .opt {
     background: none;
     border: none;
-    color: #555; /* Unselected is dim */
-    font-size: 1rem;
+    color: #555;
+    font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
-    height: 100%;
-    transition: all 0.2s ease;
-    padding: 0 10px;
+    padding: 0 12px;
+    transition: color 0.2s;
 }
 
-/* Selected Button State (Requested: White Text) */
 .opt.selected {
-    color: #fff !important; /* Forces white on selected items */
-    cursor: default;
+    color: #fff !important;
 }
 
-/* Mirror Specific styling */
-.mirror-toggle .icon { color: #555; }
-.mirror-toggle .options { padding-left: 20px; color: #fff; }
-.mirror-toggle:hover { cursor: pointer; background: #2a2a2a; }
-
-/* The 'Start' Button (Green per reference) */
 .start-btn {
-    background: #0a3d1c; /* Ref green */
-    color: #0dcf50; /* Light green text */
-    padding: 10px 25px;
+    background: #0a3d1c;
+    color: #0dcf50;
+    padding: 12px 30px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
+    margin-left: 10px;
 }
 
 /* -----------------------------
    PROMPTER VIEW (The Output)
    ----------------------------- */
 #prompter-screen {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
+    position: absolute; /* Fix for scrolling */
+    top: 0; left: 0; width: 100vw; min-height: 100vh;
     background: #000;
     z-index: 999;
 }
 
 #prompter-text {
-    width: 80%; /* Safe zone from TV edges */
+    width: 85%; /* TV Safe Zone */
     margin: 0 auto;
-    color: #fff; /* High visibility white text */
+    color: #fff; 
     white-space: pre-wrap;
     line-height: 1.6;
     font-weight: bold;
-    padding-top: 45vh; /* Center initial text */
-    padding-bottom: 90vh; /* Allow scrolling far past end */
-    font-size: 8vh; /* Ideal TV default height */
-    text-align: left; /* Dynamic */
+    padding-top: 50vh; 
+    padding-bottom: 100vh;
+    font-size: 8vh;
+    text-align: left;
 }
 
 .reading-line {
@@ -137,14 +128,13 @@ textarea {
     top: 50%;
     left: 0;
     width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-top: 2px solid #ff0000; /* Red guiding line */
+    height: 2px;
+    background: rgba(255, 0, 0, 0.4); /* Red line indicator */
     z-index: 1001;
     pointer-events: none;
 }
 
-/* Output alignment and mirroring dynamic classes */
+/* Alignment & Mirroring */
 .align-center { text-align: center !important; }
 .align-right { text-align: right !important; }
 .mirrored { transform: scaleX(-1); }
@@ -153,10 +143,9 @@ textarea {
 
 .tv-controls {
     position: fixed;
-    bottom: 0;
+    bottom: 20px;
     width: 100%;
-    background: rgba(0,0,0,0.7);
     text-align: center;
     font-size: 0.8rem;
-    color: #888;
+    color: #444;
 }
