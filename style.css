@@ -18,22 +18,24 @@ body {
 
 textarea {
     width: 90%;
-    height: 300px;
+    height: 350px;
     background: #000;
     color: #fff;
     border: 1px solid #333;
     font-size: 1.5rem;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 4px;
 }
 
 .controls-container {
     display: flex;
     background: #1a1a1a;
-    padding: 10px;
+    padding: 12px;
     border-radius: 8px;
-    gap: 15px;
-    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap; /* Helps on smaller laptop screens */
+    justify-content: center;
 }
 
 .control-segment {
@@ -41,13 +43,13 @@ textarea {
     background: #222;
     border-radius: 6px;
     overflow: hidden;
-    height: 45px;
+    height: 48px;
     align-items: center;
 }
 
 .icon {
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
     background: #000;
     display: flex;
     align-items: center;
@@ -62,6 +64,7 @@ textarea {
     font-weight: bold;
     padding: 0 15px;
     cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .opt.selected {
@@ -71,14 +74,15 @@ textarea {
 .start-btn {
     background: #0a3d1c;
     color: #0dcf50;
-    padding: 10px 25px;
+    padding: 0 30px;
+    height: 48px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
 }
 
-/* Prompter View */
+/* Prompter View Settings */
 #prompter-screen {
     position: absolute;
     top: 0; left: 0; width: 100vw; min-height: 100vh;
@@ -87,29 +91,36 @@ textarea {
 }
 
 #prompter-text {
-    width: 80%;
+    width: 85%;
     margin: 0 auto;
     color: #fff;
     white-space: pre-wrap;
     font-weight: bold;
     padding-top: 50vh;
     padding-bottom: 100vh;
-    font-size: 8vh;
-    line-height: 1.6;
+    line-height: 1.4;
 }
+
+/* Size Logic */
+.size-standard { font-size: 6vh; }
+.size-studio { font-size: 10vh; }
+.size-broadcast { font-size: 16vh; }
+
+/* Align Logic */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Mirror Logic */
+.mirrored { transform: scaleX(-1); }
 
 .reading-line {
     position: fixed;
     top: 50%;
     width: 100%;
     height: 2px;
-    background: rgba(255,0,0,0.5);
+    background: rgba(255,0,0,0.6);
     z-index: 1000;
 }
 
-/* Logic Classes */
 .hidden { display: none; }
-.mirrored { transform: scaleX(-1); }
-.text-left { text-align: left; }
-.text-center { text-align: center; }
-.text-right { text-align: right; }
