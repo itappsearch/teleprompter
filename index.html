@@ -1,34 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROMPTR.TV - Final Build</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- ALL CSS INCLUDED HERE TO PREVENT BREAKING --- */
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        #setup-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+            background: #111;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 90%;
+            height: 300px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #333;
+            font-size: 1.5rem;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .controls-container {
+            display: flex;
+            background: #1a1a1a;
+            padding: 12px;
+            border-radius: 8px;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-segment {
+            display: flex;
+            background: #222;
+            border-radius: 6px;
+            overflow: hidden;
+            height: 48px;
+            align-items: center;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+        }
+
+        .opt {
+            background: none;
+            border: none;
+            color: #555;
+            font-weight: bold;
+            padding: 0 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            height: 100%;
+            transition: 0.2s;
+        }
+
+        .opt.selected {
+            color: #fff !important;
+            background: #2a2a2a;
+        }
+
+        .start-btn {
+            background: #0a3d1c;
+            color: #0dcf50;
+            padding: 0 35px;
+            height: 48px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        /* --- PROMPTER VIEW --- */
+        #prompter-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100vw; min-height: 100vh;
+            background: #000;
+            z-index: 999;
+        }
+
+        #prompter-text {
+            width: 85%;
+            margin: 0 auto;
+            color: #fff;
+            white-space: pre-wrap;
+            font-weight: bold;
+            padding-top: 55vh;
+            padding-bottom: 100vh;
+            line-height: 1.4;
+        }
+
+        /* Dynamic Sizes */
+        .size-standard { font-size: 6vh; }
+        .size-studio { font-size: 11vh; }
+        .size-broadcast { font-size: 17vh; }
+
+        /* Dynamic Alignment */
+        .text-left { text-align: left; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+
+        /* Mirror Effect */
+        .mirrored { transform: scaleX(-1); }
+
+        .reading-line {
+            position: fixed;
+            top: 50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(255,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .hidden { display: none !important; }
+
+        .exit-hint {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
 <div id="setup-screen">
-    <h1 style="letter-spacing:5px">PROMPTR<span style="color:#555">.</span>TV</h1>
-    <textarea id="text-input" placeholder="Enter text here..."></textarea>
+    <div class="logo">PROMPTR<span style="color:#444">.</span>TV</div>
+    <textarea id="text-input" placeholder="Type or paste your script here..."></textarea>
     
     <div class="controls-container">
         <div class="control-segment" id="speed-options">
-            <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
-            <button class="opt" data-speed="1">1</button>
-            <button class="opt" data-speed="2">2</button>
-            <button class="opt selected" data-speed="3">3</button>
-            <button class="opt" data-speed="4">4</button>
-            <button class="opt" data-speed="5">5</button>
+            <div class="icon-box"><i class="fas fa-gauge-high"></i></div>
+            <button class="opt" data-val="1">1</button>
+            <button class="opt" data-val="2">2</button>
+            <button class="opt selected" data-val="3">3</button>
+            <button class="opt" data-val="4">4</button>
+            <button class="opt" data-val="5">5</button>
         </div>
 
         <div class="control-segment" id="size-options">
-            <div class="icon"><i class="fas fa-text-height"></i></div>
-            <button class="opt selected" data-size="standard">Standard</button>
-            <button class="opt" data-size="studio">Studio</button>
-            <button class="opt" data-size="broadcast">Broadcast</button>
+            <div class="icon-box"><i class="fas fa-text-height"></i></div>
+            <button class="opt selected" data-val="standard">Standard</button>
+            <button class="opt" data-val="studio">Studio</button>
+            <button class="opt" data-val="broadcast">Broadcast</button>
         </div>
 
         <div class="control-segment" id="align-options">
-            <div class="icon"><i class="fas fa-align-left"></i></div>
-            <button class="opt selected" data-align="left">Left</button>
-            <button class="opt" data-align="center">Center</button>
-            <button class="opt" data-align="right">Right</button>
+            <div class="icon-box"><i class="fas fa-align-left"></i></div>
+            <button class="opt selected" data-val="left">Left</button>
+            <button class="opt" data-val="center">Center</button>
+            <button class="opt" data-val="right">Right</button>
         </div>
 
-        <div class="control-segment" id="mirror-btn" style="cursor:pointer">
-            <div class="icon"><i class="fas fa-sync"></i></div>
-            <span class="opt" id="mirror-text">Normal</span>
+        <div class="control-segment" id="mirror-options">
+            <div class="icon-box"><i class="fas fa-rotate"></i></div>
+            <button class="opt selected" data-val="normal">Normal</button>
+            <button class="opt" data-val="mirrored">Mirrored</button>
         </div>
 
         <button id="start-btn" class="start-btn">Start</button>
@@ -38,4 +200,84 @@
 <div id="prompter-screen" class="hidden">
     <div class="reading-line"></div>
     <div id="prompter-text"></div>
+    <div class="exit-hint">SPACE to Pause | ESC to Exit</div>
 </div>
+
+<script>
+    /* --- ALL LOGIC INCLUDED HERE TO PREVENT BREAKING --- */
+    document.addEventListener('DOMContentLoaded', () => {
+        let isScrolling = false;
+        let animationId;
+        let config = {
+            speed: 3,
+            size: 'standard',
+            align: 'left',
+            mirror: 'normal'
+        };
+
+        const startBtn = document.getElementById('start-btn');
+        const textInput = document.getElementById('text-input');
+        const prompterText = document.getElementById('prompter-text');
+        const prompterScreen = document.getElementById('prompter-screen');
+
+        // General function to handle clicking buttons in segments
+        function handleSegment(groupId, configKey) {
+            const buttons = document.querySelectorAll(`#${groupId} .opt`);
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelector(`#${groupId} .selected`).classList.remove('selected');
+                    btn.classList.add('selected');
+                    config[configKey] = btn.getAttribute('data-val');
+                });
+            });
+        }
+
+        handleSegment('speed-options', 'speed');
+        handleSegment('size-options', 'size');
+        handleSegment('align-options', 'align');
+        handleSegment('mirror-options', 'mirror');
+
+        // START ACTION
+        startBtn.addEventListener('click', () => {
+            const content = textInput.value.trim() || "PLEASE ENTER YOUR SCRIPT...";
+            prompterText.innerText = content;
+
+            // Apply Settings
+            prompterText.className = ''; // Reset
+            prompterText.classList.add(`size-${config.size}`);
+            prompterText.classList.add(`text-${config.align}`);
+            if (config.mirror === 'mirrored') prompterText.classList.add('mirrored');
+
+            // Show screen
+            prompterScreen.classList.remove('hidden');
+            window.scrollTo(0, 0);
+            isScrolling = true;
+            animate();
+        });
+
+        function animate() {
+            if (!isScrolling) return;
+            window.scrollBy(0, config.speed * 0.3);
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // GLOBAL KEYBOARD SHORTCUTS
+        window.addEventListener('keydown', (e) => {
+            if (prompterScreen.classList.contains('hidden')) return;
+
+            if (e.key === 'Escape') {
+                isScrolling = false;
+                cancelAnimationFrame(animationId);
+                prompterScreen.classList.add('hidden');
+            }
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                isScrolling = !isScrolling;
+                if (isScrolling) animate();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
