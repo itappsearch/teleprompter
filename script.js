@@ -1,92 +1,86 @@
-let scrollPos = 0;
-let isScrolling = false;
-let animationId;
-let currentSpeed = 3; 
-let currentAlign = 'left';
-let currentMirror = false;
+document.addEventListener('DOMContentLoaded', () => {
+    let isScrolling = false;
+    let animationId;
+    let currentSpeed = 3;
+    let currentAlign = 'left';
+    let isMirrored = false;
 
-const startBtn = document.getElementById('start-btn');
-const textInput = document.getElementById('text-input');
-const prompterText = document.getElementById('prompter-text');
-const prompterScreen = document.getElementById('prompter-screen');
-const mirrorBtn = document.getElementById('mirror-btn');
+    const startBtn = document.getElementById('start-btn');
+    const textInput = document.getElementById('text-input');
+    const prompterText = document.getElementById('prompter-text');
+    const prompterScreen = document.getElementById('prompter-screen');
 
-// 1. Direct Click Speed Selector
-const speedOptions = document.querySelectorAll('#speed-options .opt');
-speedOptions.forEach(opt => {
-    opt.addEventListener('click', (e) => {
-        document.querySelector('#speed-options .opt.selected').classList.remove('selected');
-        e.target.classList.add('selected');
-        currentSpeed = parseInt(e.target.dataset.speed);
+    // 1. Speed Handling
+    document.querySelectorAll('#speed-options .opt').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelector('#speed-options .selected').classList.remove('selected');
+            btn.classList.add('selected');
+            currentSpeed = parseInt(btn.dataset.speed);
+        });
     });
-});
 
-// 2. Direct Click Alignment Selector
-const alignOptions = document.querySelectorAll('#align-options .opt');
-alignOptions.forEach(opt => {
-    opt.addEventListener('click', (e) => {
-        document.querySelector('#align-options .opt.selected').classList.remove('selected');
-        e.target.classList.add('selected');
-        currentAlign = e.target.dataset.align;
+    // 2. Alignment Handling
+    document.querySelectorAll('#align-options .opt').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelector('#align-options .selected').classList.remove('selected');
+            btn.classList.add('selected');
+            currentAlign = btn.dataset.align;
+        });
     });
-});
 
-// 3. Mirror Toggle
-mirrorBtn.addEventListener('click', () => {
-    currentMirror = !currentMirror;
-    const textSpan = document.getElementById('mirror-text');
-    if(currentMirror) {
-        textSpan.innerText = "Mirrored";
-        prompterText.classList.add('mirrored');
-    } else {
-        textSpan.innerText = "Normal";
-        prompterText.classList.remove('mirrored');
+    // 3. Mirror Toggle Handling
+    const mirrorBtn = document.getElementById('mirror-btn');
+    mirrorBtn.addEventListener('click', () => {
+        isMirrored = !isMirrored;
+        const mirrorText = document.getElementById('mirror-text');
+        
+        if (isMirrored) {
+            mirrorText.innerText = "Mirrored";
+            mirrorText.classList.add('selected');
+        } else {
+            mirrorText.innerText = "Normal";
+            mirrorText.classList.remove('selected');
+        }
+    });
+
+    // 4. Start Button Logic
+    startBtn.addEventListener('click', () => {
+        // Set Text
+        prompterText.innerText = textInput.value || "Paste your script...";
+        
+        // Apply Mirror
+        if (isMirrored) prompterText.classList.add('mirrored');
+        else prompterText.classList.remove('mirrored');
+
+        // Apply Alignment
+        prompterText.classList.remove('text-left', 'text-center', 'text-right');
+        prompterText.classList.add(`text-${currentAlign}`);
+
+        // Launch
+        prompterScreen.classList.remove('hidden');
+        window.scrollTo(0, 0);
+        isScrolling = true;
+        animate();
+    });
+
+    function animate() {
+        if (!isScrolling) return;
+        window.scrollBy(0, currentSpeed * 0.25);
+        animationId = requestAnimationFrame(animate);
     }
-});
 
-// 4. Start Prompter
-startBtn.addEventListener('click', () => {
-    const text = textInput.value || "PASTE YOUR SCRIPT HERE TO BEGIN...";
-    prompterText.innerText = text;
-    
-    // Reset alignment classes
-    prompterText.classList.remove('align-center', 'align-right');
-    if (currentAlign === 'center') prompterText.classList.add('align-center');
-    if (currentAlign === 'right') prompterText.classList.add('align-right');
-
-    prompterScreen.classList.remove('hidden');
-    
-    // FIXED: Ensure we start from the top
-    window.scrollTo(0, 0); 
-    isScrolling = true;
-    animate();
-});
-
-// 5. THE FIX: The Scrolling Loop
-function animate() {
-    if (!isScrolling) return;
-
-    // We use window.scrollBy for better compatibility with TV browsers
-    // Speed 1-10 is multiplied for a smooth walk
-    const scrollAmount = currentSpeed * 0.2;
-    window.scrollBy(0, scrollAmount);
-    
-    animationId = requestAnimationFrame(animate);
-}
-
-// 6. Global Controls
-window.addEventListener('keydown', (e) => {
-    if (prompterScreen.classList.contains('hidden')) return;
-
-    if (e.key === 'Escape') {
-        isScrolling = false;
-        cancelAnimationFrame(animationId);
-        prompterScreen.classList.add('hidden');
-    }
-    
-    if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault(); 
-        isScrolling = !isScrolling;
-        if (isScrolling) animate();
-    }
+    // 5. Controls
+    window.addEventListener('keydown', (e) => {
+        if (prompterScreen.classList.contains('hidden')) return;
+        if (e.key === 'Escape') {
+            isScrolling = false;
+            cancelAnimationFrame(animationId);
+            prompterScreen.classList.add('hidden');
+        }
+        if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            isScrolling = !isScrolling;
+            if (isScrolling) animate();
+        }
+    });
 });
